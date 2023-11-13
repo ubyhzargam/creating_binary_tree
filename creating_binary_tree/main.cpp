@@ -62,6 +62,7 @@ void Treecreate()
     int x;
     struct Node *p,*t;
     struct Queue q;
+    create(&q,100);
     cout<<"Enter the value of the root "<<endl;
     root=(Node*)malloc(sizeof(Node));
     cin>>x;
@@ -144,6 +145,68 @@ void levelorder(struct Node *n)
     }
 }
 
+int count(struct Node *p)
+{
+    int x,y;
+    if(p!=NULL)
+    {
+        x=count(p->lchild);
+        y=count(p->rchild);
+        return x+y+1;
+    }
+    else
+        return 0;
+    
+}
+
+int height(struct Node *p)
+{
+    int x,y;
+    if(p!=NULL)
+    {
+        x=height(p->lchild);
+        y=height(p->rchild);
+        if(x>y)
+            return x-1;
+        else
+            return y-1;
+    }
+    else
+        return 0;
+}
+
+int leafcount(struct Node *p)
+{
+    int x,y;
+    if(p!=NULL)
+    {
+        x=leafcount(p->lchild);
+        y=leafcount(p->rchild);
+        if(p->lchild==NULL&&p->rchild==NULL)
+            return x+y+1;
+        else
+            return x+y;
+    }
+    else
+        return 0;
+}
+
+int deg2count(struct Node *p)
+{
+    int x,y;
+    if(p!=NULL)
+    {
+        x=deg2count(p->lchild);
+        y=deg2count(p->rchild);
+        if(p->lchild!=NULL&&p->rchild!=NULL)
+            return x+y+1;
+        else
+            return x+y;
+    }
+    else
+        return 0;
+}
+
 int main()
 {
     Treecreate();
@@ -159,5 +222,9 @@ int main()
     cout<<"The levelorder traversal of the entered tree is given by : "<<endl;
     levelorder(root);
     cout<<endl;
+    cout<<"The number of nodes in the entered tree is given by : "<<count(root)<<endl;
+    cout<<"The height of the entered tree is given by : "<<height(root)<<endl;
+    cout<<"The leaf nodes in the entered tree is given by : "<<leafcount(root)<<endl;
+    cout<<"The nodes with degree 2 in the entered tree is given by : "<<deg2count(root)<<endl;
     return 0;
 }
