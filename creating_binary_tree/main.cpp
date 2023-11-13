@@ -1,14 +1,138 @@
-//
-//  main.cpp
-//  creating_binary_tree
-//
-//  Created by Uby H on 12/11/23.
-//
+#include<iostream>
+using namespace std;
 
-#include <iostream>
+struct Node
+{
+    int data;
+    Node *lchild;
+    Node *rchild;
+};
 
-int main(int argc, const char * argv[]) {
-    // insert code here...
-    std::cout << "Hello, World!\n";
+struct Queue
+{
+    int front;
+    int rear;
+    int size;
+    Node **Q;
+};
+
+void Enqueue(struct Queue *q,struct Node *x)
+{
+    if((q->rear+1)%q->size==q->front)
+        cout<<"Queue is full"<<endl;
+    else
+    {
+        q->rear=(q->rear+1)%q->size;
+        q->Q[q->rear]=x;
+    }
+}
+
+struct Node * Dequeue(struct Queue *q)
+{
+    Node *x=NULL;
+    if(q->rear==q->front)
+        cout<<"Queue is Empty"<<endl;
+    else
+    {
+        q->front=(q->front+1)%q->size;
+        x=q->Q[q->front];
+    }
+    return x;
+}
+
+bool isEmpty(struct Queue q)
+{
+    if(q.front==q.rear)
+        return true;
+    else
+        return false;
+}
+
+void create(struct Queue *q,int size)
+{
+    q->size=size;
+    q->Q=(struct Node **)malloc(sizeof(struct Node *)*q->size);
+    q->front=q->rear=0;
+}
+
+struct Node *root=NULL;
+
+void Treecreate()
+{
+    int x;
+    struct Node *p,*t;
+    struct Queue q;
+    cout<<"Enter the value of the root "<<endl;
+    root=(Node*)malloc(sizeof(Node));
+    cin>>x;
+    root->data=x;
+    root->lchild=root->rchild=NULL;
+    Enqueue(&q,root);
+    while(!isEmpty(q))
+    {
+        p=Dequeue(&q);
+        cout<<"Enter the left child of "<<p->data<<" :"<<endl;
+        cin>>x;
+        if(x!=-1)
+        {
+            t=(Node*)malloc(sizeof(Node));
+            t->data=x;
+            p->lchild=t;
+            Enqueue(&q,t);
+        }
+        cout<<"Enter the right child of "<<p->data<<" :"<<endl;
+        cin>>x;
+        if(x!=-1)
+        {
+            t=(Node*)malloc(sizeof(Node));
+            t->data=x;
+            p->rchild=t;
+            Enqueue(&q,t);
+        }
+    }
+}
+
+void preorder(struct Node *n)
+{
+    if(n)
+    {
+        cout<<n->data<<" "<<endl;
+        preorder(n->lchild);
+        preorder(n->rchild);
+    }
+}
+
+void postorder(struct Node *n)
+{
+    if(n)
+    {
+        preorder(n->lchild);
+        preorder(n->rchild);
+        cout<<n->data<<" "<<endl;
+    }
+}
+
+void inorder(struct Node *n)
+{
+    if(n)
+    {
+        preorder(n->lchild);
+        cout<<n->data<<" "<<endl;
+        preorder(n->rchild);
+    }
+}
+
+int main()
+{
+    Treecreate();
+    cout<<"The preorder traversal of the entered tree is given by : "<<endl;
+    preorder(root);
+    cout<<endl;
+    cout<<"The inorder traversal of the entered tree is given by : "<<endl;
+    inorder(root);
+    cout<<endl;
+    cout<<"The postorder traversal of the entered tree is given by : "<<endl;
+    postorder(root);
+    cout<<endl;
     return 0;
 }
