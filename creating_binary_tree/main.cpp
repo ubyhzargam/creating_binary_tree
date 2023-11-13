@@ -122,6 +122,28 @@ void inorder(struct Node *n)
     }
 }
 
+void levelorder(struct Node *n)
+{
+    struct Queue q;
+    create(&q,20);
+    cout<<n->data<<" ";
+    Enqueue(&q,n);
+    while(!isEmpty(q))
+    {
+        n=Dequeue(&q);
+        if(n->lchild)
+        {
+            cout<<n->lchild->data<<" ";
+            Enqueue(&q,n->lchild);
+        }
+        if(n->rchild)
+        {
+            cout<<n->rchild->data<<" ";
+            Enqueue(&q,n->rchild);
+        }
+    }
+}
+
 int main()
 {
     Treecreate();
@@ -133,6 +155,9 @@ int main()
     cout<<endl;
     cout<<"The postorder traversal of the entered tree is given by : "<<endl;
     postorder(root);
+    cout<<endl;
+    cout<<"The levelorder traversal of the entered tree is given by : "<<endl;
+    levelorder(root);
     cout<<endl;
     return 0;
 }
